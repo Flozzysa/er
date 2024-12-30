@@ -61,4 +61,18 @@ Config.SafeZoneCoords = {
 	{x = 226.56, y = -1993.84, z = 19.55, radio = 30.0}
 }
 
+Config.MilitaryVehicles = {
+    "RHINO",        -- Tank
+    "BARRACKS",     -- Military Truck
+    "CRUSADER",     -- Military Jeep
+    "INSURGENT",    -- Armored Vehicle
+    "INSURGENT2",   -- Armored Vehicle Pickup
+    "INSURGENT3",   -- Armored Vehicle Custom
+    "APC",          -- Armored Personnel Carrier
+    "HALFTRACK",    -- Half-track
+    "HUNTER",       -- Attack Helicopter
+    "LAZER",        -- Fighter Jet
+    "HYDRA"         -- VTOL Jet
+}
+
 Config.Debug = false

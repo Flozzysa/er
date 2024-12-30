@@ -15,6 +15,6 @@ client_scripts {
 	'client/loot.lua'
 }
 
-server_script {
+server_scripts {
 	'server/main.lua'
 }

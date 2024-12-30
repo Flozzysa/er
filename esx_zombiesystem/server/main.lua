@@ -40,6 +40,34 @@ end)
 
 entitys = {}
 
+RegisterServerEvent('esx_zombiesystem:militaryVehicleKill')
+AddEventHandler('esx_zombiesystem:militaryVehicleKill', function()
+    local xPlayer = ESX.GetPlayerFromId(source)
+    local randomChance = math.random(1, 100)
+    local randomWeapon = Config.WeaponLoot[math.random(1, #Config.WeaponLoot)]
+    local randomItem = Config.ItemLoot[math.random(1, #Config.ItemLoot)]
+
+    if randomChance > 0 and randomChance < Config.ProbabilityWeaponLoot then
+        local randomAmmo = math.random(1, 30)
+        xPlayer.addWeapon(randomWeapon, randomAmmo)
+        TriggerClientEvent("esx:showNotification", xPlayer.source, ('You found ' .. randomWeapon))
+    elseif randomChance >= Config.ProbabilityWeaponLoot and randomChance < Config.ProbabilityMoneyLoot then
+        local randomMoney = math.random(900, 1100)
+        xPlayer.addMoney(randomMoney)
+        TriggerClientEvent("esx:showNotification", xPlayer.source, ('You found ~g~$' .. randomMoney .. ' dollars'))
+    elseif randomChance >= Config.ProbabilityMoneyLoot and randomChance < Config.ProbabilityItemLoot then
+        local randomItemCount = math.random(1, 3)
+        if xPlayer.canCarryItem(randomItem, randomItemCount) then
+            xPlayer.addInventoryItem(randomItem, randomItemCount)
+            TriggerClientEvent("esx:showNotification", xPlayer.source, ('You found ~y~' .. randomItemCount .. 'x ~b~' .. randomItem))
+        else
+            xPlayer.showNotification('You cannot pickup that because your inventory is full!')
+        end
+    else
+        TriggerClientEvent("esx:showNotification", xPlayer.source, 'You found nothing')
+    end
+end)
+
 RegisterServerEvent("RegisterNewZombie")
 AddEventHandler("RegisterNewZombie", function(entity)
 	TriggerClientEvent("ZombieSync", -1, entity)

@@ -473,6 +473,15 @@ if Config.NotHealthRecharge then
 	SetPlayerHealthRechargeMultiplier(PlayerId(), 0.0)
 end
 
+function IsVehicleModel(vehicle, models)
+    for _, model in ipairs(models) do
+        if GetEntityModel(vehicle) == GetHashKey(model) then
+            return true
+        end
+    end
+    return false
+end
+
 if Config.MuteAmbience then
 	StartAudioScene('CHARACTER_CHANGE_IN_SKY_SCENE')
 end
@@ -484,11 +493,12 @@ if Config.ZombieDropLoot then
 		while true do
 			Citizen.Wait(1)
 			for i, entity in pairs(entitys) do
-				if IsPedDeadOrDying(entity, 1) == 1 then
-					if GetPedSourceOfDeath(entity) == PlayerPedId() then
-						local randomChance = math.random(1, 100)
-						local randomWeapon = Config.WeaponLoot[math.random(1, #Config.WeaponLoot)]
-						local randomItem = Config.ItemLoot[math.random(1, #Config.ItemLoot)]
+if IsPedDeadOrDying(entity, 1) == 1 then
+    local killer = GetPedSourceOfDeath(entity)
+    if killer == PlayerPedId() or IsPedInAnyVehicle(killer, false) and IsVehicleModel(GetVehiclePedIsIn(killer, false), GetHashKey(Config.MilitaryVehicles)) then
+        local randomChance = math.random(1, 100)
+        local randomWeapon = Config.WeaponLoot[math.random(1, #Config.WeaponLoot)]
+        local randomItem = Config.ItemLoot[math.random(1, #Config.ItemLoot)]
 
 						if randomChance > 0 and randomChance < Config.ProbabilityWeaponLoot then
 							local randomAmmo = math.random(1, 30)
